@@ -71,7 +71,7 @@ Manual registers are time-consuming and prone to proxy attendance. SnapCheck rem
 * **Start session** (choose `mode: offline | online`)
 * **Broadcast BLE rotating token** (teacher phone or small beacon) + optional projector rotating QR (visual fallback)
 * **Teacher mobile app**: start/stop session, see live attendee list, approve flagged cases
-* **Fallbacks**: PIN announced by teacher, printed QR, or teacher verification UI if student device fails checks
+* **Fallbacks**: PIN announced by teacher, QR, or teacher verification UI if student device fails checks
 
 ---
 
