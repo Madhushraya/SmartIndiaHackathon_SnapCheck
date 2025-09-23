@@ -141,7 +141,7 @@ Server actions: validate device, validate face & liveness, recompute/validate HM
 
 ## Tech stack (recommended)
 
-* Frontend: React (dashboard), React Native or PWA (student app)
+* Frontend: React (dashboard), React Native 
 * Backend: FastAPI (Python) or Node (Express/Fastify)
 * DB: PostgreSQL + pgvector (embeddings)
 * Storage: S3 (images/evidence)
