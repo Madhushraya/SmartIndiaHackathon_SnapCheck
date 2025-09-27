@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gov of Punjab | SikhyaSetu</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #ffffff; /* Full white background */
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+    }
+
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* subtle shadow */
+      width: 100%;
+      max-width: 380px; /* compact on desktop, fits mobile */
+      padding: 20px;
+    }
+
+    .card-header {
+      text-align: center;
+      background: none; /* no colored header */
+      padding-bottom: 15px;
+    }
+
+    .card-header h3 {
+      margin: 5px 0;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .card-header small {
+      color: #555;
+      font-style: italic;
+    }
+
+    .gov-logo {
+      width: 60px;
+      margin-bottom: 10px;
+    }
+
+    .btn-custom {
+      border-radius: 25px;
+      padding: 10px;
+      background: #007bff;
+      border: none;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .btn-custom:hover {
+      background: #0056b3;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 480px) {
+      .card {
+        padding: 15px;
+      }
+      .gov-logo {
+        width: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <!-- Punjab logo placeholder -->
+      <img src="punjab-logo.png" class="gov-logo" alt="Punjab Logo">
+      <h3>SikhyaSetu</h3>
+      <small>Gov of Punjab | Learn. Track. Grow.</small>
+    </div>
+    <div class="card-body">
+      <!-- Tabs for Login / Signup -->
+      <ul class="nav nav-tabs mb-3" id="authTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Login</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab">Signup</button>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <!-- Login Form -->
+        <div class="tab-pane fade show active" id="login" role="tabpanel">
+          <form onsubmit="handleLogin(event)">
+            <div class="mb-3">
+              <label>Email</label>
+              <input type="email" class="form-control" id="loginEmail" required>
+            </div>
+            <div class="mb-3">
+              <label>Password</label>
+              <input type="password" class="form-control" id="loginPassword" required>
+            </div>
+            <button type="submit" class="btn btn-custom w-100">Login</button>
+          </form>
+        </div>
+
+        <!-- Signup Form -->
+        <div class="tab-pane fade" id="signup" role="tabpanel">
+          <form onsubmit="handleSignup(event)">
+            <div class="mb-3">
+              <label>Name</label>
+              <input type="text" class="form-control" id="signupName" required>
+            </div>
+            <div class="mb-3">
+              <label>Email</label>
+              <input type="email" class="form-control" id="signupEmail" required>
+            </div>
+            <div class="mb-3">
+              <label>Password</label>
+              <input type="password" class="form-control" id="signupPassword" required>
+            </div>
+            <button type="submit" class="btn btn-custom w-100">Signup</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+function handleSignup(event) {
+  event.preventDefault();
+  const name = document.getElementById("signupName").value;
+  const email = document.getElementById("signupEmail").value;
+  // Save student info in localStorage
+  localStorage.setItem("studentName", name);
+  localStorage.setItem("studentEmail", email);
+  // Redirect to dashboard
+  window.location.href = "dashboard.html";
+}
+
+function handleLogin(event) {
+  event.preventDefault();
+  const email = document.getElementById("loginEmail").value;
+  localStorage.setItem("studentEmail", email);
+  // Optional: You can also set a default name if needed
+  if (!localStorage.getItem("studentName")) {
+    localStorage.setItem("studentName", "Student");
+  }
+  window.location.href = "dashboard.html";
+}
+</script>
+
+</body>
+</html>

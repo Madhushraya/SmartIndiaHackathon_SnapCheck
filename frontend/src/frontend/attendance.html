@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Attendance</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    #video {
+      width: 300px;
+      height: 220px;
+      border: 2px solid #444;
+      margin-top: 15px;
+      display: none;
+    }
+    #canvas {
+      display: none;
+      margin-top: 15px;
+      border: 2px solid #444;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Hi <span id="studentName">Student</span>, please mark your attendance</h2>
+  <button id="attendanceBtn">📸 Capture & Submit</button>
+
+  <br>
+  <video id="video" autoplay></video>
+  <canvas id="canvas" width="300" height="220"></canvas>
+
+  <script>
+    // Load student name
+    const studentName = localStorage.getItem("studentName") || "Student";
+    document.getElementById("studentName").innerText = studentName;
+
+    const attendanceBtn = document.getElementById("attendanceBtn");
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    attendanceBtn.addEventListener("click", async () => {
+      try {
+        // ✅ Request location
+        navigator.geolocation.getCurrentPosition(
+          (pos) => console.log("Location:", pos.coords),
+          (err) => console.error("Location blocked:", err)
+        );
+
+        // ✅ Request camera & start preview
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        video.style.display = "block";
+
+        // Wait 3 sec → snapshot
+        setTimeout(() => {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          canvas.style.display = "block";
+
+          // Stop cam
+          stream.getTracks().forEach(track => track.stop());
+          video.style.display = "none";
+
+          alert("Attendance submitted ✅ (face captured)");
+        }, 3000);
+
+      } catch (err) {
+        console.error("Permission error:", err);
+        alert("Camera/Location permission denied!");
+      }
+    });
+  </script>
+</body>
+</html>

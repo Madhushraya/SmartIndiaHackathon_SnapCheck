@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance System Flowchart</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        #diagram {
+            width: 100%;
+            height: auto;
+            min-height: 1200px;
+        }
+        /* Custom Mermaid styling for MASSIVE elements */
+        .mermaid {
+            font-size: 36px !important;
+            font-weight: bold !important;
+        }
+        /* Override Mermaid default styles for better visibility */
+        .node rect, .node circle, .node ellipse, .node polygon {
+            stroke-width: 8px !important;
+            min-width: 300px !important;
+            min-height: 120px !important;
+        }
+        .edgePath .path {
+            stroke-width: 6px !important;
+        }
+        .edgeLabel {
+            font-size: 28px !important;
+            font-weight: bold !important;
+            background: white !important;
+            padding: 12px !important;
+            border-radius: 12px !important;
+            border: 3px solid #333 !important;
+        }
+        /* Force MUCH larger node sizes */
+        .node {
+            font-size: 36px !important;
+            font-weight: bold !important;
+        }
+        /* Make subgraph labels bigger */
+        .cluster-label {
+            font-size: 32px !important;
+            font-weight: bold !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 Attendance System Flow</h1>
+        <div id="diagram" class="mermaid">
+flowchart TB
+    %% Start nodes with larger styling
+    Start(("🚀 START")):::startStyle
+
+    %% Client apps
+    subgraph CLIENT ["📱 CLIENT APPLICATIONS"]
+        StudentApp["👨‍🎓 STUDENT APP<br/>📷 Face ID Detection<br/>🔍 Liveness Check<br/>📍 Geo Location"]:::appStyle
+        TeacherApp["👩‍🏫 TEACHER APP<br/>▶️ Start Session<br/>📱 QR Code / BLE<br/>⚙️ Session Control"]:::appStyle
+    end
+
+    %% Server components
+    subgraph SERVER ["🖥️ SERVER COMPONENTS"]
+        Auth["🔐 AUTH & DEVICE<br/>MANAGER<br/>📱 Device Binding<br/>🔑 User Verification"]:::serverStyle
+        SessionMgr["⏰ SESSION MANAGER<br/>🌱 Seed Generation<br/>🔄 Rotating Tokens<br/>📊 Active Sessions"]:::serverStyle
+        AttendanceProc["⚡ ATTENDANCE<br/>PROCESSOR<br/>📋 Rules Engine<br/>✅ Validation Logic"]:::serverStyle
+        FaceSvc["🤖 FACE & LIVENESS<br/>SERVICE<br/>🧠 ML Embeddings<br/>🗄️ Vector Database<br/>📐 Similarity Matching"]:::serverStyle
+        Storage["💾 STORAGE SYSTEM<br/>☁️ AWS S3<br/>📝 Audit Logs<br/>🔒 Secure Archive"]:::serverStyle
+        Analytics["📊 ANALYTICS &<br/>DASHBOARD<br/>📈 Reports<br/>📉 Insights"]:::serverStyle
+    end
+
+    %% Decision flows with enhanced styling and better text layout
+    SessionCheck{"❓ IS SESSION<br/>ACTIVE?"}:::decisionStyle
+    GeoCheck{"📍 INSIDE<br/>GEO-FENCE?"}:::decisionStyle
+    FaceCheck{"👤 FACE MATCH<br/>& LIVENESS<br/>OK?"}:::decisionStyle
+    DeviceCheck{"📱 DEVICE<br/>BOUND?"}:::decisionStyle
+
+    %% Action nodes
+    RejectSession["❌ REJECT<br/>No Active Session<br/>Found"]:::rejectStyle
+    RejectGeo["❌ REJECT<br/>Outside Campus<br/>Boundary"]:::rejectStyle
+    FlagReview["⚠️ FLAG FOR<br/>MANUAL REVIEW<br/>Admin Action Required"]:::flagStyle
+    RequestRebind["🔄 REQUEST<br/>DEVICE REBIND<br/>Admin Approval Needed"]:::rebindStyle
+    MarkAttendance["✅ MARK<br/>ATTENDANCE<br/>Store Evidence<br/>& Timestamp"]:::successStyle
+
+    %% Main flows
+    Start --> TeacherApp
+    Start --> StudentApp
+
+    TeacherApp --> SessionMgr
+    TeacherApp -.-> StudentApp
+
+    StudentApp --> Auth
+    Auth --> SessionMgr
+
+    StudentApp --> SessionCheck
+    SessionCheck -->|"✅ YES"| GeoCheck
+    SessionCheck -->|"❌ NO"| RejectSession
+
+    GeoCheck -->|"✅ YES"| FaceCheck
+    GeoCheck -->|"❌ NO"| RejectGeo
+
+    FaceCheck -->|"✅ YES"| DeviceCheck
+    FaceCheck -->|"❌ NO"| FlagReview
+
+    DeviceCheck -->|"✅ YES"| MarkAttendance
+    DeviceCheck -->|"❌ NO"| RequestRebind
+
+    MarkAttendance --> AttendanceProc
+    RequestRebind --> Auth
+
+    AttendanceProc --> FaceSvc
+    AttendanceProc --> Storage
+    AttendanceProc --> Analytics
+
+    %% Error handling flows
+    FlagReview -.-> Auth
+    RejectSession -.-> Auth
+    RejectGeo -.-> Auth
+
+    %% Styling classes
+    classDef startStyle fill:#e1f5fe,stroke:#01579b,stroke-width:4px,color:#000
+    classDef appStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:3px,color:#000
+    classDef serverStyle fill:#e8f5e8,stroke:#1b5e20,stroke-width:3px,color:#000
+    classDef decisionStyle fill:#fff3e0,stroke:#e65100,stroke-width:3px,color:#000
+    classDef successStyle fill:#e8f5e8,stroke:#2e7d32,stroke-width:3px,color:#000
+    classDef rejectStyle fill:#ffebee,stroke:#c62828,stroke-width:3px,color:#000
+    classDef flagStyle fill:#fff8e1,stroke:#f57f17,stroke-width:3px,color:#000
+    classDef rebindStyle fill:#e3f2fd,stroke:#1565c0,stroke-width:3px,color:#000
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid with custom config for larger text
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#ffffff',
+                primaryTextColor: '#000000',
+                primaryBorderColor: '#333333',
+                lineColor: '#333333',
+                sectionBkgColor: '#f9f9f9',
+                altSectionBkgColor: '#ffffff',
+                gridColor: '#cccccc',
+                secondaryColor: '#ffffff',
+                tertiaryColor: '#f9f9f9',
+                background: '#ffffff',
+                mainBkg: '#ffffff',
+                secondBkg: '#f9f9f9',
+                tertiaryBkg: '#f0f0f0'
+            },
+            flowchart: {
+                nodeSpacing: 60,
+                rankSpacing: 80,
+                curve: 'basis',
+                padding: 30,
+                useMaxWidth: true,
+                htmlLabels: true
+            },
+            fontFamily: 'Segoe UI, system-ui, sans-serif',
+            fontSize: '38px'
+        });
+    </script>
+</body>
+</html>

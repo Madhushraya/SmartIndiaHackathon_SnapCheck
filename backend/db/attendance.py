@@ -14,7 +14,7 @@ class Attendance(Base):
     timestamp = Column(DateTime, default=datetime.utcnow)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    face_embedding = Column(String, nullable=False)  
+    face_embedding = Column(String, nullable=True)  
     liveness_passed = Column(Boolean, default=False)
     
     user = relationship("User", back_populates="attendances")
